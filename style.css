@@ -1,0 +1,15 @@
+/* Styles */
+
+* {
+    
+}
+/* Colours */
+:root {
+    --c-greywhite: #F0F1EC;
+    --c-blackish: #545454;
+}
+
+body {
+    background-color: var(--c-greywhite);
+}
+
