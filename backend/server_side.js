@@ -214,4 +214,4 @@ function makeGuess(inputID, letterGuess, attemptWord) {
   }
   
 // ADD THE LINE BELOW TO RUN TESTS
-//  export { generateWord, makeGuess, gameInfo }
+//  export { generateWord, makeGuess, gameInfo } */

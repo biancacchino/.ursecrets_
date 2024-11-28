@@ -25,13 +25,67 @@ form.addEventListener('submit', (e) => {
         error.innerText = messages.join(', ')
     }
 
+});
+
+/**
+ * yearSelection.html
+ * i could have taken the easy way out and been someone's trophy wife but here we are. 
+ * Activating the buttons
+ */
+function initialilzeYearSelection() {
+    activateTabs();
+    //default
+    renderYears();
+}
+
+/*
+ * yearSelection.html
+ * Activating Tabs
+ * i wish this wasn't so complicated smh
+ */
+function activateTabs() {
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function () {
+            // switching tabs
+            switchTabs(this.dataset.view);
+
+            // output the required seelction 
+            if (this.dataset.view === 'yearly') {
+                renderYears();
+            } else if (this.dataset.view === 'monthly') {
+                renderMonths();
+            } else if (this.dataset.view === 'weekly') {
+                renderWeek();
+            }
+        });
+    });
+}
+
+/**
+ * yearSelection.html
+ * switching tabs kms
+ */
+function switchTabs(activeView) {
+
 }
 
 
+/**
+ * yearSelection.html
+ * year
+ */
+function renderYears() {
+    const yearsList = document.querySelector('.years');
+    yearsList.innerHTML = ''; // fuck the data
+    const currentYear = new Date().getFullYear();
 
-
-
-
+    for (let i = currentYear - 2; i <= currentYear + 4; i++) {
+        const yearItem = document.createElement('li');
+        yearItem.textContent = i;
+        yearItem.dataset.entry = false;
+    }
+}
 
 
 
@@ -184,4 +238,4 @@ function evaluate(response) {
         resetGame(winner, false); //Call 'resetGame(winner, false)' to start the game over
     }
 }
-
+*/

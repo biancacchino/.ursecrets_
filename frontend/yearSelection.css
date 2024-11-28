@@ -1,0 +1,62 @@
+:root {
+    --background: rgb(238,239,233);
+    --dark: rgb(74,74,74);
+    --lightdark: rgb(36,35,35);
+}
+
+body {
+    font-family: "Clash Display";
+    background-color: var(--background);
+    text-align: center;
+    overflow: hidden; /* no scrolling for u bucko*/
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.topnav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    margin-top: 2vh;
+    font-weight: bold;
+}
+.topleft:hover{
+    cursor: pointer;
+}
+#back-button {
+    color: var(--lightdark);
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 32px;
+}
+a,a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+}
+.tabs {
+    padding: -5vh;
+}
+.tabs h3 {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 0;
+}
+.tabs.active h3 {
+    color: var(--dark);
+}
+.view:not(.hidden) h3 {
+    color: grey;
+}
+button {
+    margin-top: 2vh;
+    font-family: "Clash Display";
+    padding: 2vh;
+    border: none;
+    border-bottom: 2px solid var(--dark);
+    background: none;
+}
+button:hover {
+    background-color: var(--lightdark);
+    color: var(--background);
+}

@@ -3,15 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>_ursecrets. | {change change change} </title>
+    <title> _ursecrets. | selections </title>
+    <link rel="stylesheet" href="yearSelection.css">
+    <script src="urSecrets.js"></script>
 </head>
-<body>
-    <div class="main-container">
-        <ul class="list-tab" id="date-selection-tabs">
-            <li class="active">years</li>
-            <li>months</li>
-            <li>days</li>
-        </ul>
+<body onload="initializeYearSelection()">
+    <div class="year-selection-container">
+        <div class="topnav">
+            <div class="topleft"><a href="home.html"><</a></div>
+        </div>
+        <div class="tabs">
+            <button class="tab active" data-view="yearly"><h3>years</h3></button>
+            <button class="tab" data-view="monthly"><h3>months</h3></button>
+            <button class="tab" data-view="weekly"><h3>days</h3></button>
+        </div>
+
+        <div class="view" id="yearly">
+            <ul class="years"></ul>
+          </div>
+          <div class="view hidden" id="monthly">
+            <ul class="months"></ul>
+          </div>
+          <div class="view hidden" id="weekly">
+            <div class="week-header">
+              <h2 class="current-date"></h2>
+            </div>
+            <ul class="days"></ul>
+          </div>
     </div>
 </body>
 </html>
