@@ -1,62 +1,76 @@
 :root {
-    --background: rgb(238,239,233);
-    --dark: rgb(74,74,74);
-    --lightdark: rgb(36,35,35);
+    --background: rgb(238, 239, 233);
+    --dark: rgb(74, 74, 74);
+    --lightdark: rgb(36, 35, 35);
 }
 
 body {
     font-family: "Clash Display";
     background-color: var(--background);
     text-align: center;
-    overflow: hidden; /* no scrolling for u bucko*/
     height: 100%;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 .topnav {
-    display: flex;
+    display: 
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    margin-top: 2vh;
     font-weight: bold;
 }
-.topleft:hover{
-    cursor: pointer;
-}
-#back-button {
-    color: var(--lightdark);
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 32px;
-}
-a,a:focus, a:active {
-    text-decoration: none;
-    color: inherit;
-}
+
 .tabs {
-    padding: -5vh;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
 }
-.tabs h3 {
-    font-weight: 600;
+
+.tab {
     font-size: 20px;
-    line-height: 0;
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-family: "Clash Display";
 }
-.tabs.active h3 {
+
+.tab.active {
+    border-bottom: 2px solid var(--dark);
     color: var(--dark);
 }
-.view:not(.hidden) h3 {
-    color: grey;
+
+.view {
+    margin-top: 20px;
+    display: none;
+    font-weight: bold;
+    font-size: 25px;
 }
-button {
-    margin-top: 2vh;
-    font-family: "Clash Display";
-    padding: 2vh;
-    border: none;
-    border-bottom: 2px solid var(--dark);
-    background: none;
+
+.view:not(.hidden) {
+    display: block;
 }
-button:hover {
-    background-color: var(--lightdark);
-    color: var(--background);
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+li {
+    margin: 10px 0;
+    cursor: pointer;
+}
+
+li[data-entry="true"]::after {
+    content: ' •';
+    color: red;
+    font-size: 18px;
+}
+
+.days {
+    display: flex;
 }

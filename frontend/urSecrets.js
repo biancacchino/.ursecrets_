@@ -1,5 +1,5 @@
 
-// start of client side js.
+// start of urSecrets.js.
 
 const form = document.getElementById('form');
 const password = document.getElementsByClassName("password-box");
@@ -27,64 +27,147 @@ form.addEventListener('submit', (e) => {
 
 });
 
-/**
- * yearSelection.html
- * i could have taken the easy way out and been someone's trophy wife but here we are. 
- * Activating the buttons
- */
-function initialilzeYearSelection() {
-    activateTabs();
-    //default
+document.addEventListener("DOMContentLoaded", function () {
+    initializeYearSelection();
+});
+
+function initializeYearSelection() {
+    setupTabs();
     renderYears();
 }
 
-/*
- * yearSelection.html
- * Activating Tabs
- * i wish this wasn't so complicated smh
- */
-function activateTabs() {
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', function () {
-            // switching tabs
-            switchTabs(this.dataset.view);
+function setupTabs() {
+    const tabs = document.querySelectorAll(".tab");
+    const views = document.querySelectorAll(".view");
 
-            // output the required seelction 
-            if (this.dataset.view === 'yearly') {
-                renderYears();
-            } else if (this.dataset.view === 'monthly') {
-                renderMonths();
-            } else if (this.dataset.view === 'weekly') {
-                renderWeek();
-            }
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+
+            // Show corresponding view
+            const targetView = tab.getAttribute("data-view");
+            views.forEach(view => {
+                if (view.id === targetView) {
+                    view.classList.remove("hidden");
+                } else {
+                    view.classList.add("hidden");
+                }
+            });
         });
     });
 }
-
 /**
- * yearSelection.html
- * switching tabs kms
- */
-function switchTabs(activeView) {
-
-}
-
-
-/**
- * yearSelection.html
- * year
+ * > yearSelection
+ * 
  */
 function renderYears() {
-    const yearsList = document.querySelector('.years');
-    yearsList.innerHTML = ''; // fuck the data
     const currentYear = new Date().getFullYear();
+    const yearsList = document.querySelector(".years");
 
-    for (let i = currentYear - 2; i <= currentYear + 4; i++) {
-        const yearItem = document.createElement('li');
-        yearItem.textContent = i;
-        yearItem.dataset.entry = false;
+    for (let year = currentYear - 2; year <= currentYear + 4; year++) {
+        const yearItem = document.createElement("li");
+        yearItem.textContent = year;
+        yearItem.dataset.entry = false; // Default no entry indicator
+
+        // Check for entries (replace with actual API call)
+        fetch(`/entries?year=${year}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.hasEntries) {
+                    yearItem.dataset.entry = true;
+                }
+            });
+
+        yearItem.addEventListener("click", () => {
+            renderMonths(year);
+        });
+
+        yearsList.appendChild(yearItem);
     }
+}
+
+function renderMonths(year) {
+    switchTabs("monthly");
+    const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+    const monthsList = document.querySelector(".months");
+    monthsList.innerHTML = ""; // Clear previous months
+
+    months.forEach((month, index) => {
+        const monthItem = document.createElement("li");
+        monthItem.textContent = month;
+        monthItem.dataset.entry = false;
+
+        // Check for entries (replace with actual API call)
+        fetch(`/entries?year=${year}&month=${index + 1}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.hasEntries) {
+                    monthItem.dataset.entry = true;
+                }
+            });
+
+        monthItem.addEventListener("click", () => {
+            renderDays(year, index + 1);
+        });
+
+        monthsList.appendChild(monthItem);
+    });
+}
+
+function renderDays(year, month) {
+    switchTabs("weekly");
+    const daysList = document.querySelector(".days");
+    const currentDate = document.querySelector(".current-date");
+    const daysInMonth = new Date(year, month, 0).getDate(); // Total days in the month
+
+    currentDate.textContent = `${month}/${year}`;
+    daysList.innerHTML = ""; // Clear previous days
+
+    for (let day = 1; day <= daysInMonth; day++) {
+        const dayItem = document.createElement("li");
+        dayItem.textContent = day;
+        dayItem.dataset.entry = false;
+
+        // Check for entries (replace with actual API call)
+        fetch(`/entries?year=${year}&month=${month}&day=${day}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.hasEntries) {
+                    dayItem.dataset.entry = true;
+                }
+            });
+
+        daysList.appendChild(dayItem);
+    }
+}
+/**
+ * function for yearSelection page
+ * 
+ * @param {*} viewId - 
+ */
+function switchTabs(viewId) {
+    const tabs = document.querySelectorAll(".tab");
+    const views = document.querySelectorAll(".view");
+
+    tabs.forEach(tab => {
+        tab.classList.remove("active");
+        if (tab.getAttribute("data-view") === viewId) {
+            tab.classList.add("active");
+        }
+    });
+
+    views.forEach(view => {
+        if (view.id === viewId) {
+            view.classList.remove("hidden");
+        } else {
+            view.classList.add("hidden");
+        }
+    });
 }
 
 
