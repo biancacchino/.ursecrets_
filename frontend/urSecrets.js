@@ -87,7 +87,12 @@ function renderYears() {
         yearsList.appendChild(yearItem);
     }
 }
-
+/**
+ * Function for yearSelection page
+ * 
+ * 
+ * @param {} year 
+ */
 function renderMonths(year) {
     switchTabs("monthly");
     const months = [
@@ -147,8 +152,9 @@ function renderDays(year, month) {
 }
 /**
  * function for yearSelection page
+ * Switching Tabs and makes it hidden or active depending on what the user 
  * 
- * @param {*} viewId - 
+ * @param {*} viewId 
  */
 function switchTabs(viewId) {
     const tabs = document.querySelectorAll(".tab");
