@@ -11,7 +11,9 @@ app.use(express.json()); //messages will be passed in JSON
 app.use(express.urlencoded({ extended: true }));
 
 // ENDPOINT EXAMPLES WITH FILE I/O
-
+app.listen(port, () => {
+    console.log(`Listening at http://localhost:${port}`);
+  }); 
 // GET ENDPOINTS
 /** 
 * example route
@@ -214,4 +216,4 @@ function makeGuess(inputID, letterGuess, attemptWord) {
   }
   
 // ADD THE LINE BELOW TO RUN TESTS
-//  export { generateWord, makeGuess, gameInfo }
+//  export { generateWord, makeGuess, gameInfo } */
