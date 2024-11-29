@@ -95,10 +95,10 @@ a:hover {
     margin: 10px;
     font-weight: 600;
 }
-.email-box, .password-box, .login {
+.user-box, .password-box, .login {
     margin: 5px;
 }
-.email-box, .password-box {
+.user-box, .password-box {
     background-color: var(--dark);
     border: none;
     width: 150%;
