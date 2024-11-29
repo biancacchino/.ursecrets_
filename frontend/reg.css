@@ -27,6 +27,7 @@ body {
     background-color: var(--background);
     z-index: 10; 
 }
+
 .topleft a {
     font-size: 32px;
     font-weight: bold;
