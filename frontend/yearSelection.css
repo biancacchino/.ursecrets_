@@ -12,15 +12,55 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 .topnav {
-    display: 
-    justify-content: space-between;
-    align-items: center;
+    width: 100%; 
+    display: flex; 
+    justify-content: flex-start; 
     padding: 10px 20px;
-    font-weight: bold;
+    background-color: var(--background);
+    z-index: 10; 
 }
 
+.topleft a {
+    font-size: 32px;
+    font-weight: bold;
+    padding-left: 20px;
+    padding-top: 20px;
+    text-decoration: none;
+    color: var(--lightdark);
+    cursor: pointer;
+}
+.topnav a:hover{
+    cursor: pointer;
+}
+#back-button {
+    color: var(--lightdark);
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 32px;
+}
+#back-button, #back-button:hover {
+    color: var(--lightdark);
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 32px;
+}
+a,a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+}
+.years {
+    font-size: 60px;
+}
+.months {
+    font-size: 35px;
+}
+#weekly {
+    padding-top: 5em;
+    
+}
 .tabs {
     display: flex;
     justify-content: center;
@@ -53,6 +93,9 @@ body {
 .view:not(.hidden) {
     display: block;
 }
+.current-date {
+    font-size: 32px;
+}
 
 ul {
     list-style: none;
@@ -63,14 +106,35 @@ ul {
 li {
     margin: 10px 0;
     cursor: pointer;
+    text-align: center;
 }
 
 li[data-entry="true"]::after {
     content: ' •';
-    color: red;
+    color: var(--dark);
     font-size: 18px;
 }
 
-.days {
-    display: flex;
+.days li {
+    background-color: lightgrey;
+    display: inline flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    height: 60px;
+    width:60px;
+    border-radius: 50%;
+    margin: 5px;
+    font-size: 30px;
+}
+button {
+    color: var(--lightdark);
+    border: none;
+    background-color: var(--background);
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 32px;
+}
+button:hover {
+    color: grey;
 }

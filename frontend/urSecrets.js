@@ -26,155 +26,186 @@ form.addEventListener('submit', (e) => {
     }
 
 });
-
-document.addEventListener("DOMContentLoaded", function () {
-    initializeYearSelection();
-});
-
+/**
+ * yearSelection.html stuff
+ */
 function initializeYearSelection() {
     setupTabs();
-    renderYears();
+    renderYears(); // defaults to yearly page
 }
 
+/**
+ * 
+ */
 function setupTabs() {
-    const tabs = document.querySelectorAll(".tab");
-    const views = document.querySelectorAll(".view");
+    const tabs = document.querySelectorAll('.tab');
+    const views = document.querySelectorAll('.view');
 
     tabs.forEach(tab => {
-        tab.addEventListener("click", () => {
-            // Remove active class from all tabs
-            tabs.forEach(t => t.classList.remove("active"));
-            tab.classList.add("active");
+        tab.addEventListener('click', () => {
+            // remoce active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
 
-            // Show corresponding view
-            const targetView = tab.getAttribute("data-view");
+            // add active class to the clicked tab
+            tab.classList.add('active');
+
+            // show the corresponding view
+            const targetView = tab.getAttribute('data-view');
             views.forEach(view => {
+                view.classList.add('hidden'); // hide all views
                 if (view.id === targetView) {
-                    view.classList.remove("hidden");
-                } else {
-                    view.classList.add("hidden");
+                    view.classList.remove('hidden'); // show the target view
                 }
             });
+
+            // load the appropriate content
+            if (targetView === 'yearly') {
+                renderYears();
+            } else if (targetView === 'monthly') {
+                // assume a default year for the first render
+                renderMonths(new Date().getFullYear());
+            } else if (targetView === 'weekly') {
+                // assume the current week for the first render
+                renderWeek(new Date());
+            }
         });
     });
 }
+
 /**
- * > yearSelection
- * 
+ * renders the years
  */
 function renderYears() {
+    const yearsList = document.querySelector('.years');
+    yearsList.innerHTML = ''; // remove remove remove previoi=us stuff on screen
     const currentYear = new Date().getFullYear();
-    const yearsList = document.querySelector(".years");
 
     for (let year = currentYear - 2; year <= currentYear + 4; year++) {
-        const yearItem = document.createElement("li");
+        const yearItem = document.createElement('li');
         yearItem.textContent = year;
-        yearItem.dataset.entry = false; // Default no entry indicator
 
-        // Check for entries (replace with actual API call)
+        // check if year has entries
         fetch(`/entries?year=${year}`)
             .then(res => res.json())
             .then(data => {
                 if (data.hasEntries) {
-                    yearItem.dataset.entry = true;
+                    yearItem.classList.add('has-entry');
                 }
             });
 
-        yearItem.addEventListener("click", () => {
+        yearItem.addEventListener('click', () => {
             renderMonths(year);
+            switchTab('monthly'); // switch to the monthly view
         });
 
         yearsList.appendChild(yearItem);
     }
 }
-/**
- * Function for yearSelection page
- * 
- * 
- * @param {} year 
- */
+
+// Render months dynamically
 function renderMonths(year) {
-    switchTabs("monthly");
+    const monthsList = document.querySelector('.months');
+    monthsList.innerHTML = ''; // Clear previous content
     const months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
+        'january', 'february', 'march', 'april', 'may', 'june',
+        'july', 'august', 'september', 'october', 'november', 'december'
     ];
-    const monthsList = document.querySelector(".months");
-    monthsList.innerHTML = ""; // Clear previous months
 
     months.forEach((month, index) => {
-        const monthItem = document.createElement("li");
+        const monthItem = document.createElement('li');
         monthItem.textContent = month;
-        monthItem.dataset.entry = false;
 
-        // Check for entries (replace with actual API call)
-        fetch(`/entries?year=${year}&month=${index + 1}`)
+        // Check if month has entries
+        fetch(`/entries?year=${year}&month=${index + 1}`) // start at the first month
             .then(res => res.json())
             .then(data => {
                 if (data.hasEntries) {
-                    monthItem.dataset.entry = true;
+                    monthItem.classList.add('has-entry');
                 }
             });
 
-        monthItem.addEventListener("click", () => {
-            renderDays(year, index + 1);
+        monthItem.addEventListener('click', () => {
+            renderWeek(new Date(year, index+1));
+            switchTab('weekly'); // switch to the weekly view
         });
 
         monthsList.appendChild(monthItem);
     });
 }
 
-function renderDays(year, month) {
-    switchTabs("weekly");
-    const daysList = document.querySelector(".days");
-    const currentDate = document.querySelector(".current-date");
-    const daysInMonth = new Date(year, month, 0).getDate(); // Total days in the month
+// render a week
+function renderWeek(startDate) {
+    const daysList = document.querySelector('.days');
+    const weekHeader = document.querySelector('.current-date');
+    daysList.innerHTML = ''; // clear previous content
 
-    currentDate.textContent = `${month}/${year}`;
-    daysList.innerHTML = ""; // Clear previous days
+    const startOfWeek = new Date(startDate);
+    startOfWeek.setDate(startDate.getDate() - startDate.getDay()); // start on sunday
 
-    for (let day = 1; day <= daysInMonth; day++) {
-        const dayItem = document.createElement("li");
-        dayItem.textContent = day;
-        dayItem.dataset.entry = false;
+    weekHeader.textContent = `_week of ${(startOfWeek.toDateString()).toLowerCase()}.`;
 
-        // Check for entries (replace with actual API call)
-        fetch(`/entries?year=${year}&month=${month}&day=${day}`)
+    for (let i = 0; i < 7; i++) {
+        const day = new Date(startOfWeek);
+        day.setDate(startOfWeek.getDate() + i);
+
+        const dayItem = document.createElement('li');
+        dayItem.textContent = day.getDate();
+        dayItem.classList.add('day');
+
+        // check if day has entries
+        fetch(`/entries?year=${day.getFullYear()}&month=${day.getMonth() + 1}&day=${day.getDate()}`)
             .then(res => res.json())
             .then(data => {
                 if (data.hasEntries) {
-                    dayItem.dataset.entry = true;
+                    dayItem.classList.add('has-entry');
                 }
             });
 
         daysList.appendChild(dayItem);
     }
+
+    // add navigation
+    addWeekNavigation(startOfWeek);
 }
-/**
- * function for yearSelection page
- * Switching Tabs and makes it hidden or active depending on what the user 
- * 
- * @param {*} viewId 
- */
-function switchTabs(viewId) {
-    const tabs = document.querySelectorAll(".tab");
-    const views = document.querySelectorAll(".view");
+
+// add navigation for weeks
+function addWeekNavigation(startOfWeek) {
+    const prevWeekButton = document.getElementById('prev-week');
+    const nextWeekButton = document.getElementById('next-week');
+
+    prevWeekButton.onclick = () => renderWeek(new Date(startOfWeek.setDate(startOfWeek.getDate() - 7)));
+    nextWeekButton.onclick = () => renderWeek(new Date(startOfWeek.setDate(startOfWeek.getDate() + 7)));
+}
+
+// to switch tabs
+function switchTab(viewId) {
+    document.querySelectorAll('.view').forEach(view => view.classList.add('hidden'));
+    document.getElementById(viewId).classList.remove('hidden');
+}
+
+// to switch to a specific tab by its ID
+function switchTab(viewId) {
+    const tabs = document.querySelectorAll('.tab');
+    const views = document.querySelectorAll('.view');
 
     tabs.forEach(tab => {
-        tab.classList.remove("active");
-        if (tab.getAttribute("data-view") === viewId) {
-            tab.classList.add("active");
+        if (tab.getAttribute('data-view') === viewId) {
+            tab.classList.add('active');
+        } else {
+            tab.classList.remove('active');
         }
     });
 
     views.forEach(view => {
         if (view.id === viewId) {
-            view.classList.remove("hidden");
+            view.classList.remove('hidden');
         } else {
-            view.classList.add("hidden");
+            view.classList.add('hidden');
         }
     });
 }
+
+
 
 
 
