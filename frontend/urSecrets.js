@@ -142,7 +142,9 @@ function renderWeek(startDate) {
     const startOfWeek = new Date(startDate);
     startOfWeek.setDate(startDate.getDate() - startDate.getDay()); // start on sunday
 
-    weekHeader.textContent = `_week of ${(startOfWeek.toDateString()).toLowerCase()}.`;
+    // uses toLocaleDateString and uses a dictionary to extract certain parts of the date
+    weekHeader.textContent = `_${startOfWeek.toLocaleDateString('en-US', { month: 'long', year: 'numeric'}).toLowerCase()}.`;
+    
 
     for (let i = 0; i < 7; i++) {
         const day = new Date(startOfWeek);
@@ -168,13 +170,16 @@ function renderWeek(startDate) {
     addWeekNavigation(startOfWeek);
 }
 
-// add navigation for weeks
+/**
+ * logic for prev and next week btns
+ * @param {} startOfWeek 
+ */
 function addWeekNavigation(startOfWeek) {
     const prevWeekButton = document.getElementById('prev-week');
     const nextWeekButton = document.getElementById('next-week');
 
-    prevWeekButton.onclick = () => renderWeek(new Date(startOfWeek.setDate(startOfWeek.getDate() - 7)));
-    nextWeekButton.onclick = () => renderWeek(new Date(startOfWeek.setDate(startOfWeek.getDate() + 7)));
+    prevWeekButton.onclick = () => renderWeek(new Date(startOfWeek.setDate(startOfWeek.getDate() - 7))); // go back 7 days
+    nextWeekButton.onclick = () => renderWeek(new Date(startOfWeek.setDate(startOfWeek.getDate() + 7))); // go fwd 7 days
 }
 
 // to switch tabs
