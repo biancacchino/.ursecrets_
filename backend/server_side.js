@@ -6,15 +6,26 @@ const parser = require("body-parser"); // to manage requests
 const path = require("path"); // for file paths
 const session = require("express-session"); // keeps users logged in.
 
+let pages = path.join(__dirname, '../frontend');
+
+
 
 const app = express();
 const port = 3000;
 
-app.use(cors()); //manage cors headers
+/*app.use(cors()); //manage cors headers
 app.use(express.json()); //messages will be passed in JSON
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));*/
 
-// server start
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(pages, 'home.html'))
+  
+})
+
+
+//server start
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
   }); 
@@ -23,7 +34,7 @@ const users = {}
 
 
 
-app.post('/create', async (req, res) => {
+/*app.post('/create', async (req, res) => {
     const { password } = req.body;
 
     if (users[username]) {
@@ -46,4 +57,4 @@ app.post('/login', async (req, res) => {
 
     req.session.userId = username;
     res.redirect('/dashboard.html');
-});
+});*/
