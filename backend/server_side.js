@@ -13,28 +13,59 @@ let pages = path.join(__dirname, '../frontend');
 const app = express();
 const port = 3000;
 
-/*app.use(cors()); //manage cors headers
+app.use(cors()); //manage cors headers
 app.use(express.json()); //messages will be passed in JSON
-app.use(express.urlencoded({ extended: true }));*/
+app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+
+//login page
 app.get('/', (req, res) => {
     res.sendFile(path.join(pages, 'home.html'))
   
-})
+});
+
+//create account
+app.get('/create', (req, res) => {
+    res.sendFile(path.join(pages, 'signup.html'))
+  
+});
+
+//create account
+app.get('/forgot', (req, res) => {
+    res.sendFile(path.join(pages, 'forgot-pass.html'))
+  
+});
 
 
-//server start
-app.listen(port, () => {
-    console.log(`Listening at http://localhost:${port}`);
-  }); 
+app.post('/create', (req, res) => {
+    const { username, password } = req.body;
 
-const users = {}
+    
+    console.log('New User:', { username, password });
+
+    // redirects to home page
+    res.redirect('/');
+});
+
+
+app.post('/forgot', (req, res) => {
+    const { username, password } = req.body;
+
+    
+    console.log('New User:', { username, password });
+
+    // redirects to home page
+    res.redirect('/');
+});
 
 
 
-/*app.post('/create', async (req, res) => {
+/*
+const users = []
+
+app.post('/create', async (req, res) => {
     const { password } = req.body;
 
     if (users[username]) {
@@ -44,10 +75,10 @@ const users = {}
     const hashedPassword = await bcrypt.hash(password, 10);
     users[username] = { password: hashedPassword };
 
-    res.redirect('/login.html');
+    res.redirect('home.html');
 });
 
-app.post('/login', async (req, res) => {
+/* app.post('/login', async (req, res) => {
     const { username, password } = req.body;
     const user = users[username];
 
@@ -57,4 +88,10 @@ app.post('/login', async (req, res) => {
 
     req.session.userId = username;
     res.redirect('/dashboard.html');
-});*/
+}); */
+
+
+//server start
+app.listen(port, () => {
+    console.log(`Listening at http://localhost:${port}`);
+  }); 

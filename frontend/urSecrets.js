@@ -4,8 +4,7 @@
 const form = document.getElementById('form');
 const password = document.getElementsByClassName("password-box");
 const email = document.getElementsByClassName('email-box');
-const error = document.getElementById('error')
-
+const error = document.getElementById('error');
 
 
 
