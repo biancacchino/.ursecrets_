@@ -38,16 +38,24 @@ app.get('/forgot', (req, res) => {
   
 });
 
+const users = []
 
-app.post('/create', (req, res) => {
-    const { username, password } = req.body;
-
-    
-    console.log('New User:', { username, password });
-
-    // redirects to home page
-    res.redirect('/');
+app.post('/create', async (req, res) => {
+    try {
+        const hash = await bcrypt.hash(req.body.password,10)
+        users.push({
+            id: Date.now().toString(),
+            user: req.body.username,
+            password: hash,
+        })
+        console.log(users);
+        res.redirect('/');
+    } catch {
+        console.log('error');
+        res.redirect("/create");
+    }   
 });
+
 
 
 app.post('/forgot', (req, res) => {
@@ -61,34 +69,6 @@ app.post('/forgot', (req, res) => {
 });
 
 
-
-/*
-const users = []
-
-app.post('/create', async (req, res) => {
-    const { password } = req.body;
-
-    if (users[username]) {
-        return res.status(400).send('User already exists!');
-    }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    users[username] = { password: hashedPassword };
-
-    res.redirect('home.html');
-});
-
-/* app.post('/login', async (req, res) => {
-    const { username, password } = req.body;
-    const user = users[username];
-
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-        return res.status(401).send('Invalid username or password!');
-    }
-
-    req.session.userId = username;
-    res.redirect('/dashboard.html');
-}); */
 
 
 //server start
