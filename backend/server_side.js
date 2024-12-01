@@ -2,7 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
     require("dotenv").config()
 }
 
-
+//must download these modules in order for server run.
 const express = require('express'); //to run a server application
 const cors = require("cors"); //to get around cors issues.  browsers may restrict cross-origin HTTP requests initiated from scripts!
 const bcrypt = require("bcrypt"); // password hashing.
@@ -53,7 +53,7 @@ app.get('/create', (req, res) => {
   
 });
 
-//create account
+//forgot password
 app.get('/forgot', (req, res) => {
     res.sendFile(path.join(pages, 'forgot-pass.html'))
   
@@ -61,6 +61,12 @@ app.get('/forgot', (req, res) => {
 //year selection
 app.get('/years', (req, res) => {
     res.sendFile(path.join(pages, 'yearSelection.html'))
+  
+});
+
+//error message
+app.get('/error', (req, res) => {
+    res.sendFile(path.join(pages, 'error.html'))
   
 });
 
@@ -87,7 +93,7 @@ app.post('/create', async (req, res) => {
 
 app.post("/", passport.authenticate("local", {
     successRedirect: "/years",
-    failureRedirect: "/forgot",
+    failureRedirect: "/error",
     failureFlash: true,
 }))
 
@@ -100,4 +106,3 @@ app.post("/", passport.authenticate("local", {
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
   }); 
-console.log(users)
