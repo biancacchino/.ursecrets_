@@ -2,7 +2,7 @@
 // start of urSecrets.js.
 
 const form = document.getElementById('form');
-const password = document.getElementsByClassName("password-box");
+const password = document.querySelector(".password-box");
 const email = document.getElementsByClassName('email-box');
 const error = document.getElementById('error')
 
@@ -217,6 +217,8 @@ function switchTab(viewId) {
  * DOM ELEMENTS
  */
 
+// storage?
+let diaryEntries = JSON.parse(localStorage.getItem('diaryEntries'));
 // buttons
 const lockButton = document.getElementById('lock-button');
 const trashButton = document.getElementById('trash-button');
@@ -228,11 +230,97 @@ const diaryContent = document.getElementById('diary-content');
 // do i even have to comment this?
 const diaryDate = document.getElementById('diary-date');
 
+/**
+ * initialize the diary page
+ */
+function initDiary() {
+    const selectedDate = localStorage.getItem('selectedDate');
+    if (!selectedDate) {
+        diaryDate.textContent = '_no date selected.';
+        return;
+    }
 
+    const [year,month,day] = selectedDate.split(' ');
+    const formattedDate = new Date(year, month - 1, day).toLocaleDateString('en-US', {
+        month: 'long', day: 'numeric', year: 'numeric',
+    });
 
+    diaryDate.textContent = `_${formattedDate}`;
 
+    if (diaryEntries[selectedDate]) {
+        diaryViewMode(selectedDate);
+    } else {
+        diaryEditMode();
+    }
+}
 
+/**
+ * view mode
+ */
+function diaryViewMode(date) {
+    diaryInput.classList.add('hidden');
+    diaryView.textContent = diaryEntries[date];
+    diaryView.classList.remove('hidden');
+    saveButton.classList.add('hidden');
 
+    const editButton = document.createElement('button');
+    editButton.id = 'edit-button';
+    editButton.className = 'action-button';
+    editButton.textContent = 'edit.';
+    document.querySelector('.bottomright').appendChild(editButton);
+
+    editButton.addEventListener('click', () => {
+        diaryEditMode(date);
+        editButton.remove();
+    });
+}
+
+/**
+ * edit mode
+ */
+function diaryEditMode(date) {
+    diaryInput.classList.remove('hidden');
+    diaryView.classList.add('hidden');
+    saveButton.classList.remove('hidden');
+
+    if (date) { // if there is a date 
+        diaryInput.value = diaryEntries[date]; // give me date yayy
+    } else {
+        diaryInput.value = ''; // new new new new new enw
+    }
+}
+
+/**
+ * save diary gang
+ */
+saveButton.addEventListener('click', () => {
+    const selectedDate = localStorage.getItem('selectedDate');
+    if (!selectedDate) {
+        alert('no date selected buddy.');
+        return;
+    }
+    const content = diaryInput.value.trim();
+    if (!content) {
+        alert('diary entry cannot be empty.');
+        return;
+    }
+    // save to storages
+    diaryEntries[selectedDate] = content;
+    localStorage.setItem('diaryEntries', JSON.stringify(diaryEntries));
+    
+    diaryViewMode(selectedDate);
+    addDotDay(selectedDate);
+});
+
+/**
+ * trash
+ */
+trashButton.addEventListener('click', () => {
+    const selectedDate = localStorage.getItem('selectedDate');
+    if (!selectedDate) {
+        alert('no date selected buddy.');
+    }
+})
 
 
 
