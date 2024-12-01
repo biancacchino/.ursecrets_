@@ -15,7 +15,7 @@ const passport = require('passport');
 
 initPassport(
     passport,
-    username => users.find(user => user.user === username),
+    userID => users.find(user => user.userID === userID),
     id => users.find(user => user.id === id )
 )
 
@@ -72,12 +72,12 @@ app.post('/create', async (req, res) => {
         const hash = await bcrypt.hash(req.body.password,10)
         users.push({
             id: Date.now().toString(),
-            user: req.body.username,
+            userID: req.body.userID,
             password: hash,
         })
         console.log(users);
         res.redirect('/');
-    } catch {
+    } catch (error){
         console.log('error');
         res.redirect("/create");
     }   
@@ -96,10 +96,8 @@ app.post("/", passport.authenticate("local", {
 
 
 
-
-
-
 //server start
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
   }); 
+console.log(users)
