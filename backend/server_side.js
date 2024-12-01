@@ -38,28 +38,24 @@ app.use(session({
     resave: false, // no session variable if nothing is changed
     saveUninitialized: false
 }))
-
-//login page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(pages, 'home.html'))
-  
-});
 app.use(passport.initialize())
 app.use(passport.session())
 
+//login page
+app.get('/', checkNotAuthenticated, (req, res) => {
+    res.sendFile(path.join(pages, 'home.html'))
+  
+});
+
+
 //create account
-app.get('/create', (req, res) => {
+app.get('/create', checkNotAuthenticated, (req, res) => {
     res.sendFile(path.join(pages, 'signup.html'))
   
 });
 
-//forgot password
-app.get('/forgot', (req, res) => {
-    res.sendFile(path.join(pages, 'forgot-pass.html'))
-  
-});
 //year selection
-app.get('/years', (req, res) => {
+app.get('/years', checkAuthenticated, (req, res) => {
     res.sendFile(path.join(pages, 'yearSelection.html'))
   
 });
@@ -73,7 +69,7 @@ app.get('/error', (req, res) => {
 
 const users = []
 
-app.post('/create', async (req, res) => {
+app.post('/create', checkNotAuthenticated, async (req, res) => {
     try {
         const hash = await bcrypt.hash(req.body.password,10)
         users.push({
@@ -91,12 +87,26 @@ app.post('/create', async (req, res) => {
 
 
 
-app.post("/", passport.authenticate("local", {
+app.post("/", checkNotAuthenticated, passport.authenticate("local", {
     successRedirect: "/years",
     failureRedirect: "/error",
     failureFlash: true,
 }))
 
+//if user is not logged in they cannot navigate to other pages.
+function checkAuthenticated(req, res, next){
+    if(req.isAuthenticated()){
+        return next()
+    }
+    res.redirect("/")
+}
+
+function checkNotAuthenticated(req, res, next){
+    if(req.isAuthenticated()){
+        return res.redirect("/yearso=no")
+    }
+    next()
+}
 
 
 
