@@ -1,0 +1,47 @@
+
+<!--ADDING THIS TO THE MAINN DIARY ENRTY HTML LATER-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password-Protected Diary</title>
+    <link rel="stylesheet" href="emoji.css">
+    <script defer src="emoji.js"></script>
+</head>
+<body>
+    <div id="app">
+   
+
+        <!-- Emoji of the Day Form -->
+        
+        <label for="emoji-picker">Emoji of the Day:</label>
+        <select id="emoji-picker">
+            <option value="😀">😀 Happy</option>
+            <option value="😔">😔 Sad</option>
+            <option value="😡">😡 Angry</option>
+            <option value="😌">😌 Relaxed</option>
+            <option value="😢">😢 Crying</option>
+            <option value="🤔">🤔 Thoughtful</option>
+        </select>
+        <button id="save-entry">Save Entry</button>
+
+        <!-- Diary Entries Section -->
+        <h2>Your Entries</h2>
+        <div id="entries-container"></div>
+
+        <!-- MOOD Graph Section -->
+        <h2>Your Mood Graph</h2>
+        <label for="time-range">View Mood by:</label>
+        <select id="time-range">
+            <option value="week">This Week</option>
+            <option value="month">This Month</option>
+            <option value="year">This Year</option>
+        </select>
+        <button id="filter-chart">Update Chart</button>
+        <canvas id="moodChart"></canvas>
+    </div>
+</body>
+</html>
+
