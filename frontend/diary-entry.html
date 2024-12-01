@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diary Entry</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="urSecrets.js"></script>
+    <title>_ursecrets. | diary </title>
+    <link rel="stylesheet" type="text/css" href="diary.css" title="style" />
+    <script src="urSecrets.js" defer></script>
 </head>
 <body>
     <div class="topnav">
@@ -13,24 +13,26 @@
             <a href="yearSelection.html" id="back-button"><</a>
         </div>
     </div>
-    <div id="diary-area">
+    <div class="header-title">
+        <h1 id="diary-date"></h1>
+    </div>
+    <div id="diary-entry-container">
         <div class="diary-header">
-            <h2 id="diary-date">date</h2>
-            <button id="lock-button">🔒</button>
         </div>
         <div id="diary-content">
-            <textarea id="diary-input" class="hidden"></textarea>
+            <textarea name="diary-entry" id="diary-input" placeholder="write ur secrets here..."></textarea>
             <div id="diary-view" class="hidden"></div>
         </div>
     </div>
+    
     <div class="bottomnav">
         <div class="bottomleft">
-            <button id="trash-button">Trash</button>
+            <button id="lock-button" class="action-button">lock.</button>
+            <button id="trash-button" class="action-button">trash.</button>
         </div>
         <div class="bottomright">
-            <button id="save-button" class="hidden">Save</button>
+            <button id="save-button" class="action-button hidden">save.</button>
         </div>
     </div>
-
 </body>
 </html>

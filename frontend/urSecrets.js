@@ -210,9 +210,23 @@ function switchTab(viewId) {
     });
 }
 
+/**
+ * diary-entry.html
+ * i hate this shit so much i wanna kill myself
+ * 
+ * DOM ELEMENTS
+ */
 
-
-
+// buttons
+const lockButton = document.getElementById('lock-button');
+const trashButton = document.getElementById('trash-button');
+const saveButton = document.getElementById('save-button');
+// allat
+const diaryInput = document.getElementById('diary-input');
+const diaryView = document.getElementById('diary-view');
+const diaryContent = document.getElementById('diary-content');
+// do i even have to comment this?
+const diaryDate = document.getElementById('diary-date');
 
 
 
