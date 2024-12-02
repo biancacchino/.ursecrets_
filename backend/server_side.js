@@ -66,6 +66,12 @@ app.get('/error', (req, res) => {
   
 });
 
+//emoji page
+app.get('/mood', checkNotAuthenticated, (req, res) => {
+    res.sendFile(path.join(pages, 'emoji.html'))
+  
+});
+
 
 const users = []
 
