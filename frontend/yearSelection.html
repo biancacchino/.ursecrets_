@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>_ursecrets. | selections</title>
     <link rel="stylesheet" href="yearSelection.css">
-    <script src="yearSelection.js" defer></script>
+    <script src="yearSelection.js" defer="true"></script>
 </head>
 <body onload="initializeYearSelection()">
     <div class="topnav">
         <div class="topleft">
             <a href="home.html" id="back-button"><</a>
+        </div>
+        <div class="topright">
+            <button id="logout-button">log out.</button>
         </div>
     </div>
     <div class="year-selection-container">
@@ -30,6 +33,7 @@
 
         <!--yerallyyy-->
         <div class="view" id="yearly">
+            
             <ul class="years"></ul>
         </div>
 

@@ -84,7 +84,7 @@ a,a:focus, a:active {
     resize: none;
     outline: none;
     padding: 3vh;
-    background-color: var(--dark);
+    background-color: rgb(74, 74, 74);
 } ::placeholder,input, textarea {
     color: var(--background);
     font-weight: 700;
@@ -100,7 +100,7 @@ a,a:focus, a:active {
     color: var(--background);
     padding: 10px;
     display: none;
-    background-color: var(--lightdark);
+    background-color: rgb(36, 35, 35);
     border-radius: 8px;
     overflow-y: auto;
 }
@@ -167,4 +167,20 @@ a,a:focus, a:active {
 #trash-button:hover, #save-button:hover, #lock-button:hover {
     background-color: var(--action);
     color: white;
+}
+
+.mode-label {
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--dark);
+    margin-bottom: 10px;
+}
+
+.view-mode .mode-label {
+    color: var(--lightdark);
+}
+
+.edit-mode .mode-label {
+    color: var(--action);
 }

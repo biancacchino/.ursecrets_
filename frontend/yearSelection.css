@@ -3,11 +3,13 @@
     --background: rgb(238, 239, 233);
     --dark: rgb(74, 74, 74);
     --lightdark: rgb(36, 35, 35);
+    --action: rgb(100, 100, 100);
+    --font-main: "Clash Display";
 }
 
 body {
     font-family: "Clash Display";
-    color: var(--background);
+    background-color: rgb(238, 239, 233);
     text-align: center;
     height: 100%;
     display: flex;
@@ -18,12 +20,32 @@ body {
 .topnav {
     width: 100%; 
     display: flex; 
-    justify-content: flex-start; 
+    justify-content: space-between; 
     padding: 10px 20px;
+    position: fixed;
+    top: 0;
     background-color: var(--background);
     z-index: 10; 
 }
-
+.topright {
+    display: flex;
+    flex-direction: flex-end;
+}
+#logout-button {
+    font-family: "Clash Display";
+    font-size: 20px;
+    color: var(--lightdark);
+    border: none;
+    padding: 10px 20px;
+    background-color: var(--background);
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 900;
+}
+#logout-button:hover {
+    background-color: rgb(100,100,100);
+    color: white;
+}
 .topleft a {
     font-size: 32px;
     font-weight: bold;
@@ -80,8 +102,8 @@ a,a:focus, a:active {
 }
 
 .tab.active {
-    border-bottom: 2px solid var(--dark);
-    color: var(--dark);
+    color: var(--lightdark);
+    border-bottom: 2px solid rgb(74, 74, 74);
 }
 
 .view {

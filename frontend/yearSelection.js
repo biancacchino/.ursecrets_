@@ -93,6 +93,10 @@ function renderMonths(year) {
             .then(data => {
                 if (data.hasEntries) {
                     monthItem.classList.add('has-entry');
+                    const dot = document.createElement('span');
+                    dot.className = 'entry-indicator';
+                    dot.textContent = '•';
+                    monthItem.appendChild(dot);
                 }
             });
 
@@ -109,14 +113,16 @@ function renderMonths(year) {
 function renderWeek(startDate) {
     const daysList = document.querySelector('.days');
     const weekHeader = document.querySelector('.current-date');
-    daysList.innerHTML = ''; // clear previous content
+    daysList.innerHTML = ''; // Clear previous content
 
     const startOfWeek = new Date(startDate);
-    startOfWeek.setDate(startDate.getDate() - startDate.getDay()); // start on sunday
+    startOfWeek.setDate(startDate.getDate() - startDate.getDay()); // start on Sunday
 
-    // uses toLocaleDateString and uses a dictionary to extract certain parts of the date
-    weekHeader.textContent = `_${startOfWeek.toLocaleDateString('en-US', { month: 'long', year: 'numeric'}).toLowerCase()}.`;
-    
+    // Update the week header
+    weekHeader.textContent = `_${startOfWeek.toLocaleDateString('en-US', {
+        month: 'long',
+        year: 'numeric',
+    }).toLowerCase()}.`;
 
     for (let i = 0; i < 7; i++) {
         const day = new Date(startOfWeek);
@@ -126,21 +132,42 @@ function renderWeek(startDate) {
         dayItem.textContent = day.getDate();
         dayItem.classList.add('day');
 
-        // check if day has entries
+        const formattedDate = day.toISOString().split('T')[0]; // Format: yyyy-mm-dd
+
+        // Add a dot if the date has entries
         fetch(`/entries?year=${day.getFullYear()}&month=${day.getMonth() + 1}&day=${day.getDate()}`)
             .then(res => res.json())
             .then(data => {
                 if (data.hasEntries) {
-                    dayItem.classList.add('has-entry');
+                    const dot = document.createElement('span');
+                    dot.className = 'entry-indicator';
+                    dot.textContent = '•';
+                    dayItem.appendChild(dot);
                 }
             });
+
+        // Add click event to redirect to diary.html with the selected date
+        dayItem.addEventListener('click', () => {
+            localStorage.setItem('selectedDate', formattedDate); // Save date in localStorage
+            window.location.href = 'diary-entry.html'; // Redirect to diary.html
+        });
 
         daysList.appendChild(dayItem);
     }
 
-    // add navigation
+    // Add navigation for weeks
     addWeekNavigation(startOfWeek);
+    document.addEventListener('DOMContentLoaded', () => {
+        const storedStartDate = localStorage.getItem('weeklyStartDate');
+        if (storedStartDate) {
+            renderWeek(new Date(storedStartDate)); // Load the stored start of the week
+            localStorage.removeItem('weeklyStartDate'); // Clear it after rendering
+        } else {
+            renderWeek(new Date()); // Default to current week
+        }
+    });
 }
+
 
 /**
  * logic for prev and next week btns

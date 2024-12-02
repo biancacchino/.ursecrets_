@@ -15,7 +15,7 @@ const lockButton = document.getElementById('lock-button');
 function initializeDiary() {
     const selectedDate = localStorage.getItem('selectedDate'); // Date from yearSelection
     if (!selectedDate) {
-        diaryDate.textContent = '_no date selected';
+        diaryDate.textContent = '_no date selected.';
         return;
     }
 
@@ -45,18 +45,29 @@ function switchToViewMode(date) {
     diaryView.classList.remove('hidden');
     saveButton.classList.add('hidden');
 
-    // Replace save button with edit button
-    const editButton = document.createElement('button');
-    editButton.id = 'edit-button';
-    editButton.className = 'action-button';
-    editButton.textContent = 'edit.';
-    document.querySelector('.bottomright').appendChild(editButton);
+    // Update mode label
+    const modeLabel = document.getElementById('mode-label');
+    modeLabel.textContent = 'view mode';
+    modeLabel.classList.remove('edit-mode');
+    modeLabel.classList.add('view-mode');
 
+    // Handle edit button
+    let editButton = document.getElementById('edit-button');
+    if (!editButton) {
+        editButton = document.createElement('button');
+        editButton.id = 'edit-button';
+        editButton.className = 'action-button';
+        editButton.textContent = 'edit.';
+        document.querySelector('.bottomright').appendChild(editButton);
+    }
+
+    editButton.classList.remove('hidden');
     editButton.addEventListener('click', () => {
         switchToEditMode(date);
-        editButton.remove(); // Remove the edit button
+        editButton.classList.add('hidden');
     });
 }
+
 
 /**
  * Switch to edit mode
@@ -66,11 +77,17 @@ function switchToEditMode(date) {
     diaryView.classList.add('hidden');
     saveButton.classList.remove('hidden');
 
+    // Load the diary content if editing an existing entry
     if (date) {
-        diaryInput.value = diaryEntries[date] || ''; // Load existing entry
+        diaryInput.value = diaryEntries[date] || '';
     } else {
-        diaryInput.value = ''; // New entry
+        diaryInput.value = '';
     }
+
+    const modeLabel = document.getElementById('mode-label');
+    modeLabel.textContent = 'edit mode';
+    modeLabel.classList.remove('view-mode');
+    modeLabel.classList.add('edit-mode');
 }
 
 /**
@@ -132,13 +149,10 @@ lockButton.addEventListener('click', () => {
                 justify-content: center;
                 align-items: center;
                 height: 100vh;
-                background-color: var(--dark);
                 color: var(--background);
                 font-family: var(--font-main);
                 text-align: center;
                 flex-direction: column;">
-                <h1>🔒 Diary Locked</h1>
-                <p>Click the button below to unlock</p>
                 <button id="unlock-button" style="
                     background: var(--lightdark);
                     color: var(--background);
