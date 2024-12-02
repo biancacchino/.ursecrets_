@@ -1,0 +1,91 @@
+:root {
+    --background: rgb(238,239,233);
+    --dark: rgb(74,74,74);
+    --lightdark: rgb(36,35,35);
+}
+
+body {
+    padding-top: 100px;
+    font-family: "Clash Display";
+    font-size: 18px;
+    color: var(--dark);
+    background-color: var(--background);
+    text-align: center;
+    overflow: hidden; /* no scrolling for u bucko*/
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-container {
+    text-align: center;
+    width: 100%;
+}
+
+ul{ 
+    list-style-type: none;
+  }
+
+a {
+    font-weight: 600;
+}
+
+a,a:focus, a:active {
+    text-decoration: none;
+    color: inherit;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+.typewriter h1 {
+    color: var(--lightdark);
+    font-family: "Clash Display"; /* font change - */
+    font-weight: 500;
+    font-size: 2rem;
+    margin-inline: auto;
+    overflow: hidden;
+    margin-bottom: -2px;
+    /* keeps it on single line.*/
+    white-space: nowrap;
+    /*cursor*/
+    border-right: 1px solid;
+    /*steps = number of characters*/
+    animation: typing 1s steps(21) forwards, blink 1s step-end infinite;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    } to {
+        width: 100%;
+    }
+}
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+
+.fade-in {
+    animation: fadeIn 8s;
+  }
+  
+  @keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+
+  .fade-inTwo {
+    animation: fadeInTwo 10s;
+  }
+  
+  @keyframes fadeInTwo {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+
+  

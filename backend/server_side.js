@@ -2,7 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
     require("dotenv").config()
 }
 
-
+//must download these modules in order for server run.
 const express = require('express'); //to run a server application
 const cors = require("cors"); //to get around cors issues.  browsers may restrict cross-origin HTTP requests initiated from scripts!
 const bcrypt = require("bcrypt"); // password hashing.
@@ -15,7 +15,7 @@ const passport = require('passport');
 
 initPassport(
     passport,
-    username => users.find(user => user.user === username),
+    userID => users.find(user => user.userID === userID),
     id => users.find(user => user.id === id )
 )
 
@@ -38,46 +38,54 @@ app.use(session({
     resave: false, // no session variable if nothing is changed
     saveUninitialized: false
 }))
-
-//login page
-app.get('/', (req, res) => {
-    res.sendFile(path.join(pages, 'home.html'))
-  
-});
 app.use(passport.initialize())
 app.use(passport.session())
 
+//login page
+app.get('/', checkNotAuthenticated, (req, res) => {
+    res.sendFile(path.join(pages, 'home.html'))
+  
+});
+
+
 //create account
-app.get('/create', (req, res) => {
+app.get('/create', checkNotAuthenticated, (req, res) => {
     res.sendFile(path.join(pages, 'signup.html'))
   
 });
 
-//create account
-app.get('/forgot', (req, res) => {
-    res.sendFile(path.join(pages, 'forgot-pass.html'))
+//year selection
+app.get('/years', checkAuthenticated, (req, res) => {
+    res.sendFile(path.join(pages, 'yearSelection.html'))
   
 });
-//year selection
-app.get('/years', (req, res) => {
-    res.sendFile(path.join(pages, 'yearSelection.html'))
+
+//error message
+app.get('/error', (req, res) => {
+    res.sendFile(path.join(pages, 'error.html'))
+  
+});
+
+//emoji page
+app.get('/mood', checkNotAuthenticated, (req, res) => {
+    res.sendFile(path.join(pages, 'emoji.html'))
   
 });
 
 
 const users = []
 
-app.post('/create', async (req, res) => {
+app.post('/create', checkNotAuthenticated, async (req, res) => {
     try {
         const hash = await bcrypt.hash(req.body.password,10)
         users.push({
             id: Date.now().toString(),
-            user: req.body.username,
+            userID: req.body.userID,
             password: hash,
         })
         console.log(users);
         res.redirect('/');
-    } catch {
+    } catch (error){
         console.log('error');
         res.redirect("/create");
     }   
@@ -85,15 +93,26 @@ app.post('/create', async (req, res) => {
 
 
 
-app.post("/", passport.authenticate("local", {
+app.post("/", checkNotAuthenticated, passport.authenticate("local", {
     successRedirect: "/years",
-    failureRedirect: "/forgot",
+    failureRedirect: "/error",
     failureFlash: true,
 }))
 
+//if user is not logged in they cannot navigate to other pages.
+function checkAuthenticated(req, res, next){
+    if(req.isAuthenticated()){
+        return next()
+    }
+    res.redirect("/")
+}
 
-
-
+function checkNotAuthenticated(req, res, next){
+    if(req.isAuthenticated()){
+        return res.redirect("/years")
+    }
+    next()
+}
 
 
 

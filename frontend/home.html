@@ -39,13 +39,13 @@
     <span class="captions"><p>a place for all ur secrets.</p><p>enter ur password.</p></span>
     <form action="/" method="POST">
         <div class="forms">
-          <input id ="username" type="username" placeholder="username." class="user-box" required>
-          <input id ="password" type="password" placeholder="password." class="password-box" required>
+          <input id ="username" type="username" name="userID" placeholder="username." class="user-box" required>
+          <input id ="password" name ="password" type="password" placeholder="password." class="password-box" required>
         </div>
-    <button id="login">login</button>
+    <button id="login" type="submit">login</button>
   </form>
     <div class="login-container-to-pages">
-      <p>forgot ur password? <a href="/forgot" id="reset-password-page">reset it.</a></p>
+      <!--<p>forgot ur password? <a href="/forgot" id="reset-password-page">reset it.</a></p> -->
       <p>don't have an account? <a href="/create" id="signup-page">make one.</a></p>
     </div> <!--yes-->
   </div>
