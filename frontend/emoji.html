@@ -9,6 +9,7 @@
     <title>Password-Protected Diary</title>
     <link rel="stylesheet" href="emoji.css">
     <script defer src="emoji.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!--for the chart-->
 </head>
 <body>
     <div id="app">
@@ -22,8 +23,8 @@
             <option value="😔">😔 Sad</option>
             <option value="😡">😡 Angry</option>
             <option value="😌">😌 Relaxed</option>
-            <option value="😢">😢 Crying</option>
-            <option value="🤔">🤔 Thoughtful</option>
+            <option value="🤪">🤪 Crazy</option>
+            <option value="😟">😟 Stressed</option>
         </select>
         <button id="save-entry">Save Entry</button>
 
@@ -40,7 +41,7 @@
             <option value="year">This Year</option>
         </select>
         <button id="filter-chart">Update Chart</button>
-        <canvas id="moodChart"></canvas>
+        <canvas id="moodChart" width="575" height="200"></canvas>
     </div>
 </body>
 </html>
