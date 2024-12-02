@@ -1,8 +1,8 @@
 
-// start of client side js.
+// start of urSecrets.js.
 
 const form = document.getElementById('form');
-const password = document.getElementsByClassName("password-box");
+const password = document.querySelector(".password-box");
 const email = document.getElementsByClassName('email-box');
 const error = document.getElementById('error');
 
@@ -24,23 +24,7 @@ form.addEventListener('submit', (e) => {
         error.innerText = messages.join(', ')
     }
 
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+});
 
 
 
@@ -183,4 +167,4 @@ function evaluate(response) {
         resetGame(winner, false); //Call 'resetGame(winner, false)' to start the game over
     }
 }
-
+*/
