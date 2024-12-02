@@ -103,7 +103,7 @@ function checkAuthenticated(req, res, next){
 
 function checkNotAuthenticated(req, res, next){
     if(req.isAuthenticated()){
-        return res.redirect("/yearso=no")
+        return res.redirect("/years")
     }
     next()
 }
