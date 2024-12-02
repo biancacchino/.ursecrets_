@@ -7,7 +7,7 @@
 
 body {
     font-family: "Clash Display";
-    background-color: var(--background);
+    color: var(--background);
     text-align: center;
     height: 100%;
     display: flex;
