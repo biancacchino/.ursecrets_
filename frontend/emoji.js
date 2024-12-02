@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
    const entries = [];
    let moodChart;
 
+
    // Save entry and render to the container
    saveEntryButton.addEventListener('click', () => {
        const selectedEmoji = emojiPicker.value;
@@ -39,10 +40,31 @@ document.addEventListener('DOMContentLoaded', () => {
         moodCounts[entry.emoji] = (moodCounts[entry.emoji] || 0) + 1;
     });
 
-    //ddata for the chart
+    //data for the chart
     const labels = Object.keys(moodCounts);
     const data = Object.values(moodCounts); 
     const totalEntries = data.reduce((sum, count) => sum + count, 0); // Calculate total entries
+
+     // Check if any emoji exceeds 50% of total entries
+     const dominantEmojiIndex = data.findIndex(count => (count / totalEntries) > 0.5);
+     const moodMessage = document.getElementById('mood-message');
+
+     if (dominantEmojiIndex !== -1) {
+        const dominantEmoji = labels[dominantEmojiIndex];
+        const moodDescriptions = {
+            '😀': 'happy',
+            '😔': 'sad',
+            '😡': 'angry',
+            '😌': 'relaxed',
+            '🤪': 'playful',
+            '😟': 'stressed',
+        };
+
+        const moodText = moodDescriptions[dominantEmoji] || 'a particular way';
+        moodMessage.textContent = `You've been feeling quite ${moodText} lately!`;
+    } else {
+        moodMessage.textContent = ''; // Clear message if no dominant mood
+    }
 
     if (moodChart) {
         moodChart.destroy();
@@ -61,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 tooltip: {
                     callbacks: {
@@ -101,7 +124,8 @@ function filterEntriesByTimeRange(entries, timeRange) {
     return entries.filter(entry => entry.date >= startDate);
 }
 
-//Adding colours
+//Adding colors
+
 
 function generateColors(count) {
     const colors = [];
