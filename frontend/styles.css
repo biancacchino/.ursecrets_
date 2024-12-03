@@ -5,6 +5,7 @@
     --lightdark: rgb(36,35,35);
 }
 
+
 body {
     font-family: "Clash Display";
     font-size: 18px;
@@ -45,17 +46,39 @@ a:hover {
     cursor: pointer;
 }
 .sidenav {
-    height: 100%;
-    width: 0;
     position: fixed;
-    z-index: 1;
     top: 0;
-    right: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
+    right: -300px; /* Initially hidden */
+    width: 300px;
+    height: 100%;
+    background-color: var(--dark);
+    color: white;
+    transition: right 0.5s ease; /* Smooth slide-in animation */
+    padding: 20px;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
   }
+  .sidenav h1, .sidenav p, .sidenav ul {
+    margin: 0 0 20px 0;
+  }
+
+  .sidenav ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidenav ul li {
+    margin-bottom: 10px;
+  }
+  
+  .sidenav.visible {
+    right: 0; /* slideee into view */
+  }
+  
+  .hidden {
+    display: none;
+  }
+
 .login-container {
     display: flex;
     flex-direction: column;
@@ -83,6 +106,21 @@ a:hover {
     border-right: 1px solid;
     /*steps = number of characters*/
     animation: typing 1s steps(21) forwards, blink 1s step-end infinite;
+}
+#about-h1 {
+    color: var(--lightdark);
+    font-family: "Clash Display"; /* font change - */
+    font-weight: 500;
+    font-size: 3rem;
+    margin-inline: auto;
+    overflow: hidden;
+    margin-bottom: -2px;
+    /* keeps it on single line.*/
+    white-space: nowrap;
+    /*cursor*/
+    border-right: 1px solid;
+    /*steps = number of characters*/
+    animation: typing 1s steps(20) forwards, blink 1s step-end infinite;
 }
 .forms {
     display: flex;

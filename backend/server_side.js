@@ -118,6 +118,10 @@ app.delete("/logout", (req, res) => {
     })
 })
 
+//about endpoint
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, 'about.html'));
+})
 
 //if user is not logged in they cannot navigate to other pages.
 function checkAuth(req, res, next){
@@ -133,6 +137,7 @@ function checkNotAuth(req, res, next){
     }
     next()
 }
+
 // storing diary entries in memory w userid
 const diaryEntries = {}; 
 /**
@@ -182,4 +187,5 @@ app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
   }); 
 
-export { checkAuth, checkNotAuth }
+// Comment to use the server
+//export { checkAuth, checkNotAuth }

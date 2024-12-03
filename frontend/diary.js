@@ -1,4 +1,4 @@
-// In-memory storage for diary entries (or use backend/localStorage for persistence)
+// in-memory storage for diary entries (or use backend/localStorage for persistence)
 let diaryEntries = JSON.parse(localStorage.getItem('diaryEntries')) || {};
 
 // DOM Elements
@@ -8,6 +8,7 @@ const diaryView = document.getElementById('diary-view');
 const saveButton = document.getElementById('save-button');
 const trashButton = document.getElementById('trash-button');
 const lockButton = document.getElementById('lock-button');
+const diaryHeader = document.getElementById('header-title');
 
 /**
  * Initialize the diary page
@@ -193,7 +194,7 @@ lockButton.addEventListener('click', () => {
     // add a lock screen overlay
     const lockOverlay = document.createElement('div');
     lockOverlay.id = 'lock-overlay';
-    lockOverlay.innerHTML = `<h2>_locked.</h2><p>${selectedDate}</p>`;
+    lockOverlay.innerHTML = `<h2>_locked.</h2><p></p>`;
     document.body.appendChild(lockOverlay);
 
 

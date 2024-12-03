@@ -134,7 +134,7 @@ function renderMonths(year) {
             })
             .then(data => {
                 if (data.hasEntries) {
-                    monthItem.classList.add('has-entry'); // Add a visual indicator for entries
+                    monthItem.classList.add('has-entry'); // add a visual indicator for entries
                 }
             })
             .catch(err => {

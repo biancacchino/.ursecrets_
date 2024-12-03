@@ -1,31 +1,48 @@
 
-// start of urSecrets.js.
+// start of urSecrets.js. -> home.html
 
-const form = document.getElementById('form');
-const password = document.querySelector(".password-box");
-const email = document.getElementsByClassName('email-box');
-const error = document.getElementById('error');
+// const form = document.getElementById('form');
+// const password = document.querySelector(".password-box");
+// const email = document.getElementsByClassName('email-box');
+// const error = document.getElementById('error');
 
 
 
-form.addEventListener('submit', (e) => {
-    let messages = []
-    if (password.value.length <= 8) {
-        messages.push('password must be at least 8 characters.')
+// form.addEventListener('submit', (e) => {
+//     let messages = []
+//     if (password.value.length <= 8) {
+//         messages.push('password must be at least 8 characters.')
 
-    }
-    if (password.value.length >= 15) {
-        messages.push('username must be shorter than 15 characters.')
+//     }
+//     if (password.value.length >= 15) {
+//         messages.push('username must be shorter than 15 characters.')
 
-    }
+//     }
 
-    if (messages.length > 0) {
-        e.preventDefault()
-        error.innerText = messages.join(', ')
-    }
+//     if (messages.length > 0) {
+//         e.preventDefault()
+//         error.innerText = messages.join(', ')
+//     }
 
-});
-
+// });
+/**
+ * this dn't work bye.
+ */
+// document.addEventListener('DOMContentLoaded', () => {
+//     const aboutLink = document.querySelector('[data-action="about-hover"]');
+//     const sidenav = document.querySelector('.sidenav');
+  
+//     // Show sidenav on hover
+//     aboutLink.addEventListener('mouseenter', () => {
+//       sidenav.classList.add('visible');
+//     });
+  
+//     // Hide sidenav when mouse leaves
+//     sidenav.addEventListener('mouseleave', () => {
+//       sidenav.classList.remove('visible');
+//     });
+//   });
+  
 
 
 

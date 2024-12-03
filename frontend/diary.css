@@ -206,7 +206,7 @@ a,a:focus, a:active {
 .edit-mode .mode-label {
     color: var(--action);
 }
-/* #lock-overlay {
+ #lock-overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -219,8 +219,9 @@ a,a:focus, a:active {
     font-family: var(--font-main);
     font-size: 24px;
     z-index: 100;
+    background-color: var(--background);
     cursor: pointer;
-} */
+}
 .hidden {
     display: none;
 }
