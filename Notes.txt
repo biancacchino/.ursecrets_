@@ -11,6 +11,7 @@ Bianca Javier: 221520374
 Problems we encountered:
 - Adding dot to year, month, day wasn’t showing up
 - Font not loading up
+- "about" in home.html not properly showign side nav -> made into a new page
 
 Dropping Project Requirements:
 - Emoji of the day/month/year
