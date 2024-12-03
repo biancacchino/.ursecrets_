@@ -200,7 +200,7 @@ async function renderWeek(startDate) {
         // redirect to diary entry page
         dayItem.addEventListener('click', () => {
             localStorage.setItem('selectedDate', formattedDate); // save selected date
-            window.location.href = 'diary-entry.html'; // redirect
+            window.location.href = '/diary'; // redirect
         });
 
         daysList.appendChild(dayItem);

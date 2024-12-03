@@ -70,14 +70,14 @@ app.get('/error', (req, res) => {
 });
 
 //emoji page
-app.get('/mood', checkNotAuth, (req, res) => {
+app.get('/mood', checkAuth, (req, res) => {
     res.sendFile(path.join(pages, 'emoji.html'))
   
 });
 
 //logout page
-app.get('/logout', checkNotAuth, (req, res) => {
-    res.sendFile(path.join(pages, 'logout.html'))
+app.get('/diary', checkAuth, (req, res) => {
+    res.sendFile(path.join(pages, 'diary-entry.html'))
   
 });
 
@@ -182,4 +182,4 @@ app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
   }); 
 
-export { checkAuth, checkNotAuth }
+//export { checkAuth, checkNotAuth }
