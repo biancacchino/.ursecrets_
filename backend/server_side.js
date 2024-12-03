@@ -11,6 +11,9 @@ const session = require("express-session"); // keeps users logged in.
 const initPassport = require("./passport-config")
 const flash = require("express-flash");
 const passport = require('passport');
+const methodOverride = require("method-override")
+
+
 
 
 initPassport(
@@ -72,6 +75,13 @@ app.get('/mood', checkNotAuth, (req, res) => {
   
 });
 
+//logout page
+app.get('/logout', checkNotAuth, (req, res) => {
+    res.sendFile(path.join(pages, 'logout.html'))
+  
+});
+
+
 
 const users = []
 
@@ -98,6 +108,16 @@ app.post("/", checkNotAuth, passport.authenticate("local", {
     failureRedirect: "/error",
     failureFlash: true,
 }))
+
+
+//logout enpoint
+app.delete("/logout", (req, res) => {
+    req.logout(req.user, err => {
+        if (err) return next(err)
+        res.redirect("/")
+    })
+})
+
 
 //if user is not logged in they cannot navigate to other pages.
 function checkAuth(req, res, next){

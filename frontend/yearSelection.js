@@ -208,3 +208,12 @@ function switchTab(viewId) {
         }
     });
 }
+
+
+//logout functionality
+document.getElementById("logout-button").addEventListener("click", async () => {
+    const response = await fetch('/logout', { method: 'DELETE' });
+    if (response.redirected) {
+        window.location.href = response.url;
+    }
+});

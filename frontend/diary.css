@@ -32,6 +32,7 @@ body {
     z-index: 10; 
 }
 
+
 .topleft a {
     font-size: 32px;
     font-weight: bold;
@@ -56,6 +57,27 @@ body {
     text-decoration: none;
     font-size: 32px;
 }
+
+.topright {
+    display: flex;
+    flex-direction: flex-end;
+}
+#logout-button {
+    font-family: "Clash Display";
+    font-size: 20px;
+    color: var(--lightdark);
+    border: none;
+    padding: 10px 20px;
+    background-color: var(--background);
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 900;
+}
+#logout-button:hover {
+    background-color: rgb(100,100,100);
+    color: white;
+}
+
 a,a:focus, a:active {
     text-decoration: none;
     color: inherit;
