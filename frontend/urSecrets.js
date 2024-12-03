@@ -161,4 +161,27 @@ function evaluate(response) {
 
     //If the letter is NOT correct, we need to add it to the MISTAKES.
     if (!correct) {
-        //Get the value in the HTML element 
+        //Get the value in the HTML element with the ID "guess"
+        updateWrongLetters();
+    }
+
+    clearGuess();
+
+    //Check to see if you have a winner!
+    //Cycle thru guessWord to see if every element is a LETTER
+    var winner = guessWord.every(function (letter) {
+        return letter !== "_ ";
+    });
+
+    //are we a winner?
+    if (winner) {
+        resetGame(winner, false); //Call 'resetGame(winner, false)' to start the game over
+    }
+
+    //are we a loser?
+    //We are, if error_count is >= 6
+    if (error_count >= 6) {
+        resetGame(winner, false); //Call 'resetGame(winner, false)' to start the game over
+    }
+}
+*/

@@ -16,4 +16,5 @@ Dropping Project Requirements:
 - Emoji of the day/month/year
 - Journal prompts
 - Dot underneath day/month/year (bc not working…)
+- email authentication ()
 
