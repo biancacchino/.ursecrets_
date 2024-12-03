@@ -182,4 +182,4 @@ app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
   }); 
 
-//export { checkAuth, checkNotAuth }
+export { checkAuth, checkNotAuth }
