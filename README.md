@@ -18,6 +18,13 @@ Requires the JS express, fs and cors packages.
 npm i cors
 npm i fs
 npm i express
+npm i bcrypt
+npm i dotenv
+npm i express-session
+npm i express-flash
+npm i passport
+npm i passport-local
+npm i method-override
 ```
 ### Executing program
 
