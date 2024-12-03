@@ -133,10 +133,49 @@ function checkNotAuth(req, res, next){
     }
     next()
 }
+// storing diary entries in memory w userid
+const diaryEntries = {}; 
+/**
+ * saving a diary using POST
+ * 
+ */
+app.post('/diary/save', checkAuth, (req,res) => {
+    const userID = req.userID; // get userid from sesh
+    const {date, content} = req.body;
 
+    if (!diaryEntries[userID]) {
+        diaryEntries[userID] = {};
+    }
+    diaryEntries[userID][date] = content; // saves entry
+    res.json({success: true, message: 'diary entry saved successfully'});
+});
 
+/**
+ * getting diary entry by date
+ */
+app.post('/diary/:date', checkAuth, (req, res) => {
+    const userID = req.user.userID;
+    const date = req.params.date;
 
+    const userEntries = diaryEntries[userID] || {};
+    const entry = userEntries[date];
 
+    if (entry) {
+        res.json({sucess: true, entry});
+    } else {
+        res.json({success: false, message: 'no entry for this date.'})
+    }
+});
+
+/**
+ * get all entries
+ */
+app.get('/diary/all', checkAuth, (req,res) => {
+    const userID = req.user.userID;
+    const userEntries = diaryEntries[userID] || {};
+
+    res.json({success: true, entries: userEntries });
+});
 
 //server start
 app.listen(port, () => {
