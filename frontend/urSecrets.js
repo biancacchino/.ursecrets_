@@ -11,7 +11,7 @@ const error = document.getElementById('error');
 form.addEventListener('submit', (e) => {
     let messages = []
     if (password.value.length <= 8) {
-        messages.push('username must be at least 8 characters.')
+        messages.push('password must be at least 8 characters.')
 
     }
     if (password.value.length >= 15) {

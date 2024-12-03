@@ -47,61 +47,103 @@ function setupTabs() {
 /**
  * renders the years
  */
-function renderYears() {
+async function renderYears() {
+    console.log("Rendering years...");
     const yearsList = document.querySelector('.years');
-    yearsList.innerHTML = ''; // remove remove remove previoi=us stuff on screen
+    yearsList.innerHTML = ''; // Clear previous content
     const currentYear = new Date().getFullYear();
 
     for (let year = currentYear - 2; year <= currentYear + 4; year++) {
         const yearItem = document.createElement('li');
         yearItem.textContent = year;
 
-        // check if year has entries
-        fetch(`/entries?year=${year}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.hasEntries) {
-                    yearItem.classList.add('has-entry');
-                }
-            });
+        // Fetch and log entries
+        try {
+            const res = await fetch(`/entries?year=${year}`);
+            const data = await res.json();
+            console.log(`Entries for ${year}:`, data);
+
+            if (data.hasEntries) {
+                yearItem.classList.add('has-entry');
+            }
+        } catch (err) {
+            console.error(`Error fetching entries for year ${year}:`, err);
+        }
 
         yearItem.addEventListener('click', () => {
             renderMonths(year);
-            switchTab('monthly'); // switch to the monthly view
+            switchTab('monthly'); // Switch to the monthly view
         });
 
         yearsList.appendChild(yearItem);
     }
 }
 
+
 // Render months dynamically
+async function renderYears() {
+    console.log("Rendering years...");
+    const yearsList = document.querySelector('.years');
+    yearsList.innerHTML = ''; // Clear previous content
+    const currentYear = new Date().getFullYear();
+
+    for (let year = currentYear - 2; year <= currentYear + 4; year++) {
+        const yearItem = document.createElement('li');
+        yearItem.textContent = year;
+
+        // Fetch and log entries
+        try {
+            const res = await fetch(`/entries?year=${year}`);
+            const data = await res.json();
+            console.log(`Entries for ${year}:`, data);
+
+            if (data.hasEntries) {
+                yearItem.classList.add('has-entry');
+            }
+        } catch (err) {
+            console.error(`Error fetching entries for year ${year}:`, err);
+        }
+
+        yearItem.addEventListener('click', () => {
+            renderMonths(year);
+            switchTab('monthly'); // Switch to the monthly view
+        });
+
+        yearsList.appendChild(yearItem);
+    }
+}
 function renderMonths(year) {
     const monthsList = document.querySelector('.months');
     monthsList.innerHTML = ''; // Clear previous content
+
     const months = [
         'january', 'february', 'march', 'april', 'may', 'june',
         'july', 'august', 'september', 'october', 'november', 'december'
     ];
 
+    // loopin through the months array and render each month
     months.forEach((month, index) => {
         const monthItem = document.createElement('li');
         monthItem.textContent = month;
 
-        // Check if month has entries
-        fetch(`/entries?year=${year}&month=${index + 1}`) // start at the first month
-            .then(res => res.json())
+        // checkin if the month has diary entries
+        fetch(`/entries?year=${year}&month=${index + 1}`)
+            .then(res => {
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                return res.json();
+            })
             .then(data => {
                 if (data.hasEntries) {
-                    monthItem.classList.add('has-entry');
-                    const dot = document.createElement('span');
-                    dot.className = 'entry-indicator';
-                    dot.textContent = '•';
-                    monthItem.appendChild(dot);
+                    monthItem.classList.add('has-entry'); // Add a visual indicator for entries
                 }
+            })
+            .catch(err => {
+                console.error(`Error fetching entries for ${year}-${index + 1}:`, err);
             });
 
+        // add click event to render the weekly view for the first week of the month
         monthItem.addEventListener('click', () => {
-            renderWeek(new Date(year, index+1));
+            renderWeek(new Date(year, index, 1)); // start at the beginning of the month
             switchTab('weekly'); // switch to the weekly view
         });
 
@@ -109,20 +151,33 @@ function renderMonths(year) {
     });
 }
 
+
 // render a week
-function renderWeek(startDate) {
+async function renderWeek(startDate) {
     const daysList = document.querySelector('.days');
     const weekHeader = document.querySelector('.current-date');
     daysList.innerHTML = ''; // Clear previous content
 
     const startOfWeek = new Date(startDate);
-    startOfWeek.setDate(startDate.getDate() - startDate.getDay()); // start on Sunday
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay()); // start on Sunday
 
-    // Update the week header
-    weekHeader.textContent = `_${startOfWeek.toLocaleDateString('en-US', {
+    // update week header
+    weekHeader.textContent = `_week of ${startOfWeek.toLocaleDateString('en-US', {
         month: 'long',
         year: 'numeric',
     }).toLowerCase()}.`;
+
+    // Fetch all entries
+    let userEntries = {};
+    try {
+        const response = await fetch('/diary/all');
+        const result = await response.json();
+        if (result.success) {
+            userEntries = result.entries;
+        }
+    } catch (error) {
+        console.error('Error fetching entries:', error);
+    }
 
     for (let i = 0; i < 7; i++) {
         const day = new Date(startOfWeek);
@@ -132,40 +187,26 @@ function renderWeek(startDate) {
         dayItem.textContent = day.getDate();
         dayItem.classList.add('day');
 
-        const formattedDate = day.toISOString().split('T')[0]; // Format: yyyy-mm-dd
+        const formattedDate = day.toISOString().split('T')[0]; // format: yyyy-mm-dd
 
-        // Add a dot if the date has entries
-        fetch(`/entries?year=${day.getFullYear()}&month=${day.getMonth() + 1}&day=${day.getDate()}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.hasEntries) {
-                    const dot = document.createElement('span');
-                    dot.className = 'entry-indicator';
-                    dot.textContent = '•';
-                    dayItem.appendChild(dot);
-                }
-            });
+        // add dot if the date has entries
+        if (userEntries[formattedDate]) {
+            const dot = document.createElement('span');
+            dot.className = 'entry-indicator';
+            dot.textContent = '•';
+            dayItem.appendChild(dot);
+        }
 
-        // Add click event to redirect to diary.html with the selected date
+        // redirect to diary entry page
         dayItem.addEventListener('click', () => {
-            localStorage.setItem('selectedDate', formattedDate); // Save date in localStorage
-            window.location.href = 'diary-entry.html'; // Redirect to diary.html
+            localStorage.setItem('selectedDate', formattedDate); // save selected date
+            window.location.href = 'diary-entry.html'; // redirect
         });
 
         daysList.appendChild(dayItem);
     }
 
-    // Add navigation for weeks
     addWeekNavigation(startOfWeek);
-    document.addEventListener('DOMContentLoaded', () => {
-        const storedStartDate = localStorage.getItem('weeklyStartDate');
-        if (storedStartDate) {
-            renderWeek(new Date(storedStartDate)); // Load the stored start of the week
-            localStorage.removeItem('weeklyStartDate'); // Clear it after rendering
-        } else {
-            renderWeek(new Date()); // Default to current week
-        }
-    });
 }
 
 

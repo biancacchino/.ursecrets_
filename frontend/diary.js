@@ -12,10 +12,11 @@ const lockButton = document.getElementById('lock-button');
 /**
  * Initialize the diary page
  */
-function initializeDiary() {
-    const selectedDate = localStorage.getItem('selectedDate'); // Date from yearSelection
+async function initializeDiary() {
+    const selectedDate = localStorage.getItem('selectedDate');
     if (!selectedDate) {
-        diaryDate.textContent = '_no date selected.';
+        diaryDate.textContent = '_no date selected';
+        switchToEditMode(); // Default to edit mode if no date is selected
         return;
     }
 
@@ -28,30 +29,39 @@ function initializeDiary() {
 
     diaryDate.textContent = `_${formattedDate}`;
 
-    // Check if there is an existing entry
-    if (diaryEntries[selectedDate]) {
-        switchToViewMode(selectedDate);
-    } else {
-        switchToEditMode();
+    try {
+        const response = await fetch(`/diary/${selectedDate}`);
+        const result = await response.json();
+
+        if (result.success && result.entry) {
+            diaryEntries[selectedDate] = result.entry;
+            switchToViewMode(selectedDate); // Display in view mode
+        } else {
+            switchToEditMode(selectedDate); // Allow new entry creation
+        }
+    } catch (error) {
+        console.error('Error loading diary entry:', error);
+        switchToEditMode(selectedDate); // Default to edit mode if fetch fails
     }
 }
+
+
 
 /**
  * Switch to view mode
  */
 function switchToViewMode(date) {
-    diaryInput.classList.add('hidden');
-    diaryView.textContent = diaryEntries[date];
-    diaryView.classList.remove('hidden');
-    saveButton.classList.add('hidden');
+    diaryInput.classList.remove('hidden');
+    diaryView.classList.add('hidden');
+    saveButton.classList.remove('hidden'); // save button out and about
 
-    // Update mode label
-    const modeLabel = document.getElementById('mode-label');
-    modeLabel.textContent = 'view mode';
-    modeLabel.classList.remove('edit-mode');
-    modeLabel.classList.add('view-mode');
+    if (date) {
+        diaryInput.value = diaryEntries[date] || '';
+    } else {
+        diaryInput.value = '';
+    }
 
-    // Handle edit button
+    // the edit button is visible
     let editButton = document.getElementById('edit-button');
     if (!editButton) {
         editButton = document.createElement('button');
@@ -66,7 +76,14 @@ function switchToViewMode(date) {
         switchToEditMode(date);
         editButton.classList.add('hidden');
     });
+
+    // updateee mode label
+    const modeLabel = document.getElementById('mode-label');
+    modeLabel.textContent = 'view mode';
+    modeLabel.classList.remove('edit-mode');
+    modeLabel.classList.add('view-mode');
 }
+
 
 
 /**
@@ -91,26 +108,41 @@ function switchToEditMode(date) {
 }
 
 /**
- * Save diary entry
+ * Save diary entry into the local storaage
  */
-saveButton.addEventListener('click', () => {
+saveButton.addEventListener('click', async () => {
     const selectedDate = localStorage.getItem('selectedDate');
-    if (!selectedDate) {
-        alert('No date selected.');
-        return;
-    }
-
     const content = diaryInput.value.trim();
-    if (!content) {
-        alert('Diary entry cannot be empty.');
+    if (!selectedDate) {
+        alert('no date selected.');
         return;
     }
 
-    // Save entry
-    diaryEntries[selectedDate] = content;
-    localStorage.setItem('diaryEntries', JSON.stringify(diaryEntries));
+    if (!content) {
+        alert('diary entry cannot be empty.');
+        return;
+    }
 
-    switchToViewMode(selectedDate);
+    // save entry to backend
+    try {
+        const response = await fetch('/diary/save', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ date: selectedDate, content }),
+        });
+        const result = await response.json();
+
+        if (result.success) {
+            alert('diary entry saved!');
+            diaryEntries[selectedDate] = content;
+            switchToViewMode(selectedDate);
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error('error saving entry:', error);
+    }
+
     addDotToDay(selectedDate); // Add a dot in the weekly view
 });
 
@@ -124,7 +156,7 @@ trashButton.addEventListener('click', () => {
         return;
     }
 
-    const confirmed = confirm('Are you sure you want to delete this entry?');
+    const confirmed = confirm('r you sure you want to delete this entry?');
     if (confirmed) {
         delete diaryEntries[selectedDate];
         localStorage.setItem('diaryEntries', JSON.stringify(diaryEntries));
@@ -133,7 +165,7 @@ trashButton.addEventListener('click', () => {
         diaryView.textContent = '';
         switchToEditMode();
 
-        removeDotFromDay(selectedDate); // Remove the dot in the weekly view
+        removeDotFromDay(selectedDate); // remove the dot in the weekly view 
     }
 });
 
@@ -141,39 +173,40 @@ trashButton.addEventListener('click', () => {
  * Lock diary view
  */
 lockButton.addEventListener('click', () => {
-    const confirmed = confirm('Do you want to lock this diary?');
-    if (confirmed) {
-        document.body.innerHTML = `
-            <div id="lock-screen" style="
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
-                color: var(--background);
-                font-family: var(--font-main);
-                text-align: center;
-                flex-direction: column;">
-                <button id="unlock-button" style="
-                    background: var(--lightdark);
-                    color: var(--background);
-                    border: none;
-                    padding: 10px 20px;
-                    font-size: 18px;
-                    cursor: pointer;
-                    border-radius: 4px;
-                    text-transform: lowercase;
-                ">Unlock</button>
-            </div>
-        `;
+    const selectedDate = localStorage.getItem('selectedDate');
 
-        document.getElementById('unlock-button').addEventListener('click', () => {
-            location.reload(); // Reload the page
-        });
+    if (!selectedDate) {
+        alert('No date selected.');
+        return;
     }
+
+    // save before locking
+    const content = diaryInput.value.trim();
+    if (content) {
+        diaryEntries[selectedDate] = content; // updating local entries
+    }
+
+    diaryInput.classList.add('hidden');
+    diaryView.classList.add('hidden');
+    saveButton.classList.add('hidden');
+    
+    // add a lock screen overlay
+    const lockOverlay = document.createElement('div');
+    lockOverlay.id = 'lock-overlay';
+    lockOverlay.innerHTML = `<h2>_locked.</h2><p>${selectedDate}</p>`;
+    document.body.appendChild(lockOverlay);
+
+
+    // unlock by clicking the overlay
+    lockOverlay.addEventListener('click', () => {
+        lockOverlay.remove();
+        switchToViewMode(selectedDate); // ret to view mode
+    });
 });
 
+
 /**
- * Add a dot to a day in the weekly view
+ * add a dot to a day in the weekly view
  */
 function addDotToDay(date) {
     const [year, month, day] = date.split('-');
@@ -203,6 +236,3 @@ function removeDotFromDay(date) {
         if (dot) dot.remove();
     }
 }
-
-// Initialize the diary on page load
-document.addEventListener('DOMContentLoaded', initializeDiary);
