@@ -42,20 +42,20 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 //login page
-app.get('/', checkNotAuthenticated, (req, res) => {
+app.get('/', checkNotAuth, (req, res) => {
     res.sendFile(path.join(pages, 'home.html'))
   
 });
 
 
 //create account
-app.get('/create', checkNotAuthenticated, (req, res) => {
+app.get('/create', checkNotAuth, (req, res) => {
     res.sendFile(path.join(pages, 'signup.html'))
   
 });
 
 //year selection
-app.get('/years', checkAuthenticated, (req, res) => {
+app.get('/years', checkAuth, (req, res) => {
     res.sendFile(path.join(pages, 'yearSelection.html'))
   
 });
@@ -67,7 +67,7 @@ app.get('/error', (req, res) => {
 });
 
 //emoji page
-app.get('/mood', checkNotAuthenticated, (req, res) => {
+app.get('/mood', checkNotAuth, (req, res) => {
     res.sendFile(path.join(pages, 'emoji.html'))
   
 });
@@ -75,7 +75,7 @@ app.get('/mood', checkNotAuthenticated, (req, res) => {
 
 const users = []
 
-app.post('/create', checkNotAuthenticated, async (req, res) => {
+app.post('/create', checkNotAuth, async (req, res) => {
     try {
         const hash = await bcrypt.hash(req.body.password,10)
         users.push({
@@ -93,21 +93,21 @@ app.post('/create', checkNotAuthenticated, async (req, res) => {
 
 
 
-app.post("/", checkNotAuthenticated, passport.authenticate("local", {
+app.post("/", checkNotAuth, passport.authenticate("local", {
     successRedirect: "/years",
     failureRedirect: "/error",
     failureFlash: true,
 }))
 
 //if user is not logged in they cannot navigate to other pages.
-function checkAuthenticated(req, res, next){
+function checkAuth(req, res, next){
     if(req.isAuthenticated()){
         return next()
     }
     res.redirect("/")
 }
 
-function checkNotAuthenticated(req, res, next){
+function checkNotAuth(req, res, next){
     if(req.isAuthenticated()){
         return res.redirect("/years")
     }
@@ -122,3 +122,5 @@ function checkNotAuthenticated(req, res, next){
 app.listen(port, () => {
     console.log(`Listening at http://localhost:${port}`);
   }); 
+
+//export { checkAuth, checkNotAuth }
