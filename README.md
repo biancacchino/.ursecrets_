@@ -1,13 +1,11 @@
-# _ursecrets. (WIP)
+# _ursecrets. 
 
-Insert GIFS.
+a minimalistic diary for ur secrets. eecs 1012 fall 2024 @ york university.
 
 ## Description
 
-Server side code includes endpoints that interact with files, as well as
+server side code includes endpoints that interact with files, as well as
 endpoints to support diary entries.
-
-## Getting Started
 
 ### Dependencies
 
@@ -28,13 +26,13 @@ npm i method-override
 ```
 ### Executing program
 
-To start the server, cd into the backend folder and type
+to start the server, cd into the backend folder and type
 ```
 cd backend
 node server_side.js
 ```
 
-Server will run by default at http://localhost:3000/.
+server will run by default at http://localhost:3000/.
 
 # Users Stories:
 ### Zainab
