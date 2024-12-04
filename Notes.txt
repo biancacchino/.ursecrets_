@@ -1,0 +1,21 @@
+Notes for the TAs
+
+Zainab Hasan: 221408968
+- Frontend
+Mariama Jalloh: 221300298
+- Serverside logic
+Bianca Javier: 221520374
+- Frontend logic
+
+
+Problems we encountered:
+- Adding dot to year, month, day wasn’t showing up
+- Font not loading up
+- "about" in home.html not properly showign side nav -> made into a new page
+
+Dropping Project Requirements:
+- Emoji of the day/month/year
+- Journal prompts
+- Dot underneath day/month/year (bc not working…)
+- email authentication ()
+
