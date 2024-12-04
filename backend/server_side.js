@@ -70,7 +70,7 @@ app.get('/error', (req, res) => {
 });
 
 //emoji page
-app.get('/mood', checkAuth, (req, res) => {
+app.get('/mood', (req, res) => {
     res.sendFile(path.join(pages, 'emoji.html'))
   
 });
