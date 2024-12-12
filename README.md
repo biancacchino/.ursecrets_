@@ -9,7 +9,7 @@ endpoints to support diary entries.
 
 ### Dependencies
 
-Requires the JS express, fs and cors packages.  
+pls download all of these dependancies for it to work :)
 
 ### Installing
 ```
